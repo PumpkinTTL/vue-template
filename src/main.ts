@@ -8,7 +8,7 @@ import App from './App.vue'
 // Element Plus 的样式会通过 vite.config.ts 中的配置自动处理
 import 'animate.css'
 import '@/style.css'
-
+import 'ant-design-vue/dist/reset.css';
 // Font Awesome 图标
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
