@@ -1,6 +1,6 @@
 import axios from 'axios'
 import type { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 'axios'
-import { ElMessage } from 'element-plus'
+import { message } from 'ant-design-vue'
 
 // 创建axios实例
 const service: AxiosInstance = axios.create({
@@ -32,13 +32,13 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response: AxiosResponse) => {
     // 对响应数据做点什么
-    const { code, message, data } = response.data
+    const { code, data } = response.data
     
     if (code === 200) {
       return data
     } else {
-      ElMessage.error(message || '请求失败')
-      return Promise.reject(new Error(message || '请求失败'))
+      message.error(response.data.message || '请求失败')
+      return Promise.reject(new Error(response.data.message || '请求失败'))
     }
   },
   (error) => {
@@ -50,27 +50,27 @@ service.interceptors.response.use(
       
       switch (status) {
         case 401:
-          ElMessage.error('未授权，请重新登录')
+          message.error('未授权，请重新登录')
           // 清除token并跳转到登录页
           localStorage.removeItem('token')
           window.location.href = '/login'
           break
         case 403:
-          ElMessage.error('拒绝访问')
+          message.error('拒绝访问')
           break
         case 404:
-          ElMessage.error('请求地址出错')
+          message.error('请求地址出错')
           break
         case 500:
-          ElMessage.error('服务器内部错误')
+          message.error('服务器内部错误')
           break
         default:
-          ElMessage.error(data?.message || '请求失败')
+          message.error(data?.message || '请求失败')
       }
     } else if (error.request) {
-      ElMessage.error('网络错误，请检查网络连接')
+      message.error('网络错误，请检查网络连接')
     } else {
-      ElMessage.error('请求配置错误')
+      message.error('请求配置错误')
     }
     
     return Promise.reject(error)
